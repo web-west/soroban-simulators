@@ -16,7 +16,7 @@ export default class {
      * Method for debuging
      * @param data 
      */
-    log (data) {
+    __log (data) {
         if (this.config.debug || null) {
             console.log(data)
         }

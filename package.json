@@ -25,7 +25,7 @@
   "bugs": {
     "url": "https://github.com/web-west/soroban-simulators/issues"
   },
-  "homepage": "https://github.com/web-west/soroban-simulators#readme",
+  "homepage": "https://web-west.github.io/demo-soroban-simulators/",
   "devDependencies": {
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.3",
