@@ -16,6 +16,8 @@ import SorobanSimulator from 'soroban-simulators';
 
 const config = {
     debug: true,
+    btnResultText: 'Send Result',
+    textLoading: 'Loading...',
     zones: [
         {
             example: [3, -1, 2, 3, 1, -1],
@@ -37,7 +39,7 @@ const config = {
         },
         {
             example: [1, -1, 2, -2, 1, -1],
-            type: 'default',
+            type: 'random-position',
             speed: 1000,
             id: 4
         }

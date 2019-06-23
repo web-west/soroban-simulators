@@ -48,6 +48,18 @@ export default class {
             let item = document.createElement('div')
             item.className = `soroban-simulator__item`
             item.innerHTML = '<div></div>'
+            let div = item.getElementsByTagName('div')[0]
+            item.style.justifyContent = 'center'
+            item.style.alignItems = 'center'
+            item.style.position = 'relative'
+            div.style.display = 'inline-block'
+            div.style.position = 'relative'
+            if (this.config.zones[i].type === 'random-position') {
+                item.style.display = 'block'
+                item.style.textAlign = 'left'
+            } else {
+                item.style.display = 'flex'
+            }
             this.items.appendChild(item)
             this.zones.push({
                 el: item,
@@ -69,32 +81,35 @@ export default class {
         for (let i = 0; i < this.len; i++) {
             let numLen = this.zones[i].data.example.length
             let iteration = 0
-            switch (this.zones[i].data.type) {
-                case 'default':
-                    this.__default(this.zones[i], numLen, iteration)
-                    break
-            }
+            this.__change(this.zones[i], numLen, iteration)
         }
     }
 
     /**
-     * Default
+     * Change iteration
      * @param zone 
      * @param numLen 
      * @param iteration 
      */
-    __default (zone, numLen, iteration) {
+    __change (zone, numLen, iteration) {
         let _this = this
         let textEl = zone.el.getElementsByTagName('div')[0]
         if (iteration < numLen) {
             textEl.innerText = zone.data.example[iteration]
+            switch (zone.data.type) {
+                case 'random-position':
+                    this.__setRandomPosition(textEl)
+                    break
+            }
             setTimeout(() => {
                 iteration++
-                _this.__default(zone, numLen, iteration)
+                _this.__change(zone, numLen, iteration)
             }, zone.data.speed)
         } else {
             textEl.innerHTML = `<input type="number" value=""/><button>${ _this.btnResultText }</button>`
-
+            textEl.parentElement.style.display = 'flex'
+            textEl.style.top = 'auto'
+            textEl.style.left = 'auto'
             let btn = textEl.getElementsByTagName('button')[0]
             let input = textEl.getElementsByTagName('input')[0]
 
@@ -103,6 +118,33 @@ export default class {
             }
             return
         }
+    }
+
+    /**
+     * Set random position
+     * @param el 
+     */
+    __setRandomPosition (el) {
+        let parentWidth = el.parentElement.clientWidth,
+            parentHeight = el.parentElement.clientHeight,
+            elWidth = el.clientWidth,
+            elHeight = el.clientHeight,
+            maxLeft = parentWidth - elWidth,
+            maxTop = parentHeight - elHeight,
+            left = this.__getRandomInt(0, maxLeft),
+            top = this.__getRandomInt(0, maxTop)
+
+        el.style.top = top + 'px'
+        el.style.left = left + 'px'
+    }
+
+    /**
+     * Get random integer
+     * @param min 
+     * @param max 
+     */
+    __getRandomInt (min, max) {
+        return Math.floor(Math.random() * (max - min)) + min
     }
 
     /**
