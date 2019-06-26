@@ -6,7 +6,7 @@
 
 `npm i -S soroban-simulators`
 
-#### [Demo 1](https://web-west.github.io/dist/index.html)
+#### [Demo 1](https://web-west.github.io/soroban-simulators/dist/index.html)
 
 #### Example
 

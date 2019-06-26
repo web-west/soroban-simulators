@@ -4,37 +4,65 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
         <title>Soroban Simulators</title>
-        
+        <link rel="stylesheet" href="./style.css">
     </head>
     <body>
         <div id="app"></div>
 
-        <!-- plugin initialization -->
         <script>
             document.addEventListener('DOMContentLoaded', function(){
-                var elem = document.getElementById('app');
-                var config = {
-                    debug: true
-                }
-                
-                var s = new SorobanSimulator(config)
-
-                console.log(config)
-
-                s.build(elem, [
-                    {
-                        example: [1, -1, 2, -2, 1, -1],
-                        type: 'default',
-                        speed: 500,
-                        id: 1
+                var el = document.getElementById('app'),
+                    config = {
+                        debug: true,
+                        columns: 2,
+                        timeSendResult: 15 // seconds
                     },
-                    {
-                        example: [1, -1, 2, -2, 1, -1],
-                        type: 'random-position',
-                        speed: 500,
-                        id: 2
-                    }
-                ])
+                    iter = 0,
+                    zones = [
+                        {
+                            example: [1, -1, 2, -2, 1, -1],
+                            type: 'default',
+                            speed: 500,
+                            id: 1
+                        },
+                        {
+                            example: [1, -1, 2, -2, 1, -1],
+                            type: 'random-position',
+                            speed: 500,
+                            id: 2
+                        }
+                    ],                
+                    s = new SorobanSimulator(config);
+
+                s.build(el, zones)
+
+                el.addEventListener('sendResult', (e) => {
+                    var sum = s.arraySum(e.detail.zone.data.example)
+                    iter++
+                    setTimeout(() => {
+                        s.showResult(e.detail, sum === parseInt(e.detail.value) ? 'success' : 'error')
+                        if (iter >= zones.length) {
+                            iter = 0;
+                            setTimeout(() => {
+                                s.build(el, zones, 'next')
+                            }, 2000)
+                        }
+                    }, 1000)
+                })
+
+                el.addEventListener('startTraining', (e) => {
+                    console.log('startTraining')
+                })
+                el.addEventListener('endTraining', (e) => {
+                    console.log('endTraining')
+                })
+                el.addEventListener('startTimer', (e) => {
+                    console.log('startTimer')
+                })
+                el.addEventListener('endTimer', (e) => {
+                    console.log('endTimer')
+                    s.build(el, zones, 'next')
+                })
             });
         </script>
     <script type="text/javascript" src="./index.js"></script></body>
