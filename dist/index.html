@@ -1,0 +1,41 @@
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>Soroban Simulators</title>
+        
+    </head>
+    <body>
+        <div id="app"></div>
+
+        <!-- plugin initialization -->
+        <script>
+            document.addEventListener('DOMContentLoaded', function(){
+                var elem = document.getElementById('app');
+                var config = {
+                    debug: true
+                }
+                
+                var s = new SorobanSimulator(config)
+
+                console.log(config)
+
+                s.build(elem, [
+                    {
+                        example: [1, -1, 2, -2, 1, -1],
+                        type: 'default',
+                        speed: 500,
+                        id: 1
+                    },
+                    {
+                        example: [1, -1, 2, -2, 1, -1],
+                        type: 'random-position',
+                        speed: 500,
+                        id: 2
+                    }
+                ])
+            });
+        </script>
+    <script type="text/javascript" src="./index.js"></script></body>
+</html>

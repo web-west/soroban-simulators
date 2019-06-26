@@ -6,57 +6,64 @@
 
 `npm i -S soroban-simulators`
 
-#### [Demo](https://web-west.github.io/demo-soroban-simulators/)
-
+#### [Demo 1](https://web-west.github.io/dist/index.html)
 
 #### Example
 
 ```javascript
-import SorobanSimulator from 'soroban-simulators';
-
-const config = {
-    debug: true,
-    btnResultText: 'Send Result',
-    textLoading: 'Loading...',
-    zones: [
-        {
-            example: [3, -1, 2, 3, 1, -1],
-            type: 'default',
-            speed: 500,
-            id: 1
+document.addEventListener('DOMContentLoaded', function(){
+    var el = document.getElementById('app'),
+        config = {
+            debug: true,
+            columns: 2,
+            timeSendResult: 15 // seconds
         },
-        {
-            example: [1, -1, 2, -2, 1, -1],
-            type: 'default',
-            speed: 1000,
-            id: 2
-        },
-        {
-            example: [1, -1, 2, -2, 1, -1],
-            type: 'default',
-            speed: 1500,
-            id: 3
-        },
-        {
-            example: [1, -1, 2, -2, 1, -1],
-            type: 'random-position',
-            speed: 1000,
-            id: 4
-        }
-    ]
-}
+        iter = 0,
+        zones = [
+            {
+                example: [1, -1, 2, -2, 1, -1],
+                type: 'default',
+                speed: 500,
+                id: 1
+            },
+            {
+                example: [1, -1, 2, -2, 1, -1],
+                type: 'random-position',
+                speed: 500,
+                id: 2
+            }
+        ],                
+        s = new SorobanSimulator(config);
 
-const el = document.getElementById('simulator-example-1');
+    s.build(el, zones)
 
-let s = new SorobanSimulator(config);
+    el.addEventListener('sendResult', (e) => {
+        var sum = s.arraySum(e.detail.zone.data.example)
+        iter++
+        setTimeout(() => {
+            s.showResult(e.detail, sum === parseInt(e.detail.value) ? 'success' : 'error')
+            if (iter >= zones.length) {
+                iter = 0;
+                setTimeout(() => {
+                    s.build(el, zones, 'next')
+                }, 2000)
+            }
+        }, 1000)
+    })
 
-s.build(el);
-
-el.addEventListener('sendResult', (e) => {
-    let sum = s.arraySum(e.detail.zone.data.example)
-    setTimeout(() => {
-        s.showResult(e.detail, sum === parseInt(e.detail.value) ? 'success' : 'error')
-    }, 2000)
-})
+    el.addEventListener('startTraining', (e) => {
+        console.log('startTraining')
+    })
+    el.addEventListener('endTraining', (e) => {
+        console.log('endTraining')
+    })
+    el.addEventListener('startTimer', (e) => {
+        console.log('startTimer')
+    })
+    el.addEventListener('endTimer', (e) => {
+        console.log('endTimer')
+        s.build(el, zones, 'next')
+    })
+});
 
 ```
