@@ -1,6 +1,6 @@
 {
   "name": "soroban-simulators",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "Soroban simulators for training",
   "main": "dist/index.js",
   "scripts": {
