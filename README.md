@@ -14,8 +14,12 @@
 document.addEventListener('DOMContentLoaded', function(){
     var el = document.getElementById('app'),
         config = {
-            debug: true,
-            columns: 2,
+            debug: false,
+            columns: 1,
+            btnTextResult: 'Send Result',
+            textLoading: 'Loading...',
+            btnTextStart: 'Start',
+            btnTextNext: 'Next start',
             timeSendResult: 15 // seconds
         },
         iter = 0,
